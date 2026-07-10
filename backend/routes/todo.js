@@ -24,7 +24,7 @@ router.get("/all", async(req,res) =>{
         const allTodo = await pool.query(
             "SELECT * FROM todo"
         );
-        res.json(allTodo);
+        res.json(allTodo.rows);
     } catch (err) {
         console.error(err.message);
         res.status(500).send("Can't fetch data from db");
