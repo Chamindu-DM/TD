@@ -100,6 +100,36 @@ function App() {
     setEditedText(todo.description);
   };
 
+  const saveEdit = async () => {
+    if (!editTodo) return;
+
+    try {
+      const updatedTodo = {
+        description: editedText,
+        completed: editTodo.completed,
+      };
+
+      await axios.put(`http://localhost:3000/${editTodo.todo_id}`, updatedTodo);
+
+      setEditTodo(null);
+      setEditedText("");
+      getTodos();
+    } catch (err: unknown){
+      if (axios.isAxiosError(err)) {
+        console.error(err.message);
+      } else if (err instanceof Error) {
+        console.error(err.message);
+      }else {
+        console.error("Unexpected error", err);
+      }
+    }
+  };
+
+  const cancelEdit = () =>{
+    setEditTodo(null);
+    setEditedText("");
+  };
+
   return (
     <div className='min-h-screen bg-gray-800 flex justify-center items-center p-4 text-white'>
       <div className='bg-gray-50 rounded-2xl shadow-xl w-full max-w-lg p-8'>
@@ -128,9 +158,30 @@ function App() {
                 className={`h-6 w-6 border-2 rounded-full flex items-center justify-center ${todo.completed ? "bg-green-500 border-green-500 text-white" : "border-gray-300 hover:border-blue-400"}`}>
                 {todo.completed && <MdOutlineDone size={16} />}
               </button>
-              <span className='text-left flex-1'>{todo.description}</span>
+              {editTodo?.todo_id === todo.todo_id ? (
+                <input
+                    className='text-left flex-1 border px-2 py-1 rounded'
+                    value={editedText}
+                    onChange={(e) => setEditedText(e.target.value)}
+                />
+              ) : (
+                <span className='text-left flex-1'>{todo.description}</span>
+              )}
               <div className='flex gap-4'>
-                <button className='hover:text-blue-600'><MdModeEditOutline/></button>
+                {editTodo?.todo_id === todo.todo_id ? (
+                  <>
+                    <button onClick={saveEdit} className='hover:text-green-600'>
+                      Save
+                    </button>
+                    <button onClick={cancelEdit} className='hover:text-gray-600'>
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <button onClick={() => startEdit(todo)} className='hover:text-blue-600'>
+                    <MdModeEditOutline/>
+                  </button>
+                )}
                 <button
                   onClick={() => deleteTodo(todo)}
                   className='hover:text-red-600'><FaTrash/></button>
