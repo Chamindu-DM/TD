@@ -56,6 +56,8 @@ jobs:
         with:
           context: ./frontend
           push: true
+          build-args: |
+            VITE_API_URL=https://chamindu-todo-api.duckdns.org
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/td-frontend:${{ github.ref_name }}
             ${{ secrets.DOCKER_USERNAME }}/td-frontend:latest
