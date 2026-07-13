@@ -61,3 +61,15 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/td-frontend:${{ github.ref_name }}
             ${{ secrets.DOCKER_USERNAME }}/td-frontend:latest
+
+      # 7. Automatically Deploy to AWS EC2
+      - name: Deploy to AWS Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AWS_HOST_IP }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          script: |
+            cd todo-app
+            docker compose pull
+            docker compose up -d
