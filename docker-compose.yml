@@ -2,45 +2,47 @@ version: '3.8'
 
 services:
 
-# 1. Database service
-db:
-  image: postgres:15-alpine
-  environment:
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: 1234
-    POSTGRES_DB: todo_db
-  volumes:
-    # docker volumes ensures DB data is persistent
-    # maps docker volume to a folder inside the container where Postgres stores data
-    - pgdata:/var/lib/postgresql/data
-  ports:
-    - "5432:5432"
-
-# 2. Backend service
-backend:
-  build: ./backend
-  ports:
-    - "3000:3000"
-  environment:
-    DB_USER: postgres
-    DB_PASSWORD: 1234
-    DB_HOST: db
-    DB_PORT: 5432
-    DB_NAME: todo_db
-  depends_on:
-    - db
-
-# 3. frontend service
-frontend:
-  build:
-    context: ./frontend
-    args:
-      # pass the backend URL to vite during the build step
-      - VITE_API_URL=http://localhost:3000
+  # 1. Database service
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: todo_db
+    volumes:
+      # docker volumes ensures DB data is persistent
+      # maps docker volume to a folder inside the container where Postgres stores data
+      - pgdata:/var/lib/postgresql/data
+      #auto run the SQL script on a fresh database:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "5173:80" # maps port 5173 on laptop to port 80 (nginx) inside the container
+      - "5433:5432"
+
+  # 2. Backend service
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: 1234
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: todo_db
     depends_on:
-      - backend
+      - db
+
+  # 3. frontend service
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # pass the backend URL to vite during the build step
+        - VITE_API_URL=http://localhost:3000
+    ports:
+        - "5173:80" # maps port 5173 on laptop to port 80 (nginx) inside the container
+    depends_on:
+        - backend
 
 # declare the volume used by the database
 volumes:

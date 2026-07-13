@@ -22,7 +22,7 @@ router.post("/todo", async(req,res) => {
 router.get("/all", async(req,res) =>{
     try {
         const allTodo = await pool.query(
-            "SELECT * FROM todo"
+            "SELECT * FROM todo ORDER BY todo_id DESC"
         );
         res.json(allTodo.rows);
     } catch (err) {
