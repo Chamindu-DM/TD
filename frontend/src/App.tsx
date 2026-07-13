@@ -10,6 +10,8 @@ interface ToDo {
   completed: boolean
 }
 
+const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
 function App() {
 
   const [description, setDescription] = useState("");
@@ -19,7 +21,7 @@ function App() {
 
   const getTodos = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/all");
+      const res = await axios.get(`${apiUrl}/all`);
       setTodo(Array.isArray(res.data) ? res.data : []);
       console.log(res.data);
     } catch (err: unknown) {
