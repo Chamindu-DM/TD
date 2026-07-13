@@ -42,7 +42,7 @@ function App() {
   const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/todo",
+      await axios.post(`${apiUrl}/todo`,
         {
           description,
           completed: false,
@@ -69,7 +69,7 @@ function App() {
         completed: !todo.completed,
       };
 
-      await axios.put(`http://localhost:3000/${todo.todo_id}`, updatedTodo);
+      await axios.put(`${apiUrl}/${todo.todo_id}`, updatedTodo);
       getTodos();
     } catch (err: unknown) {
       if(axios.isAxiosError(err)){
@@ -84,7 +84,7 @@ function App() {
 
   const deleteTodo = async(todo : ToDo) => {
     try {
-      await axios.delete(`http://localhost:3000/${todo.todo_id}`);
+      await axios.delete(`${apiUrl}/${todo.todo_id}`);
       getTodos();
     } catch (err: unknown) {
       if(axios.isAxiosError(err)){
@@ -111,7 +111,7 @@ function App() {
         completed: editTodo.completed,
       };
 
-      await axios.put(`http://localhost:3000/${editTodo.todo_id}`, updatedTodo);
+      await axios.put(`${apiUrl}/${editTodo.todo_id}`, updatedTodo);
 
       setEditTodo(null);
       setEditedText("");
