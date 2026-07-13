@@ -45,7 +45,10 @@ jobs:
         with:
           context: ./backend
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/td-backend:${{ github.ref_name }} # uses the git tag
+          # uses the git tag
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/td-backend:${{ github.ref_name }}
+            ${{ secrets.DOCKER_USERNAME }}/td-backend:latest
       
       #6. build the frontend dockerfile and push it
       - name: Build and push Frontend images
@@ -53,4 +56,6 @@ jobs:
         with:
           context: ./frontend
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/td-frontend:${{ github.ref_name }}
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/td-frontend:${{ github.ref_name }}
+            ${{ secrets.DOCKER_USERNAME }}/td-frontend:latest
