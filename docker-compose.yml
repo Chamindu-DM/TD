@@ -6,9 +6,9 @@ services:
   db:
     image: postgres:15-alpine
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: todo_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       # docker volumes ensures DB data is persistent
       # maps docker volume to a folder inside the container where Postgres stores data
@@ -24,11 +24,11 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DB_USER: postgres
-      DB_PASSWORD: 1234
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_HOST: db
       DB_PORT: 5432
-      DB_NAME: todo_db
+      DB_NAME: ${DB_NAME}
     depends_on:
       - db
 

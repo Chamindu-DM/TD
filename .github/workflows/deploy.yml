@@ -71,5 +71,9 @@ jobs:
           key: ${{ secrets.AWS_SSH_KEY }}
           script: |
             cd todo-app
+            echo "DB_USER=${{ secrets.DB_USER }}" >.env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "DB_NAME"=${{ secrets.DB_NAME }} >> .env
+            
             docker compose pull
             docker compose up -d
