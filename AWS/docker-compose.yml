@@ -32,7 +32,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   backend:
-    # Notice we changed 'build:' to 'image:'. It pulls directly from Docker Hub!
+    # pulls directly from Docker Hub!
     image: ${DOCKER_USERNAME}/td-backend:latest
     environment:
       DB_USER: ${DB_USER}
@@ -50,7 +50,7 @@ services:
       - "traefik.http.services.backend.loadbalancer.server.port=3000"
 
   frontend:
-    # Notice we changed 'build:' to 'image:'. It pulls directly from Docker Hub!
+    # pulls directly from Docker Hub
     image: ${DOCKER_USERNAME}/td-frontend:latest
     depends_on:
       - backend
