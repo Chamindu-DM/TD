@@ -28,7 +28,7 @@ echo "Downloading configuration files from GitHub..."
 
 # (Assuming your repository is public. If it is private, this requires a Personal Access Token)
 curl -O https://raw.githubusercontent.com/Chamindu-DM/TD/main/AWS/docker-compose.yml
-curl -O https://raw.githubusercontent.com/Chamindu-DM/TD/main/backend/init.sql
+curl -O https://raw.githubusercontent.com/Chamindu-DM/TD/main/init.sql
 
 echo "✅ EC2 Setup Complete! You MUST log out and log back in for Docker permissions to apply."
 echo "After logging back in, just run: cd todo-app && docker compose up -d"
